@@ -57,7 +57,7 @@ Source: [xkcd](https://xkcd.com/844/)
 ---
 ### What is ~~cod equality~~ code quality?
 
-<p style="text-align:left;">"All code base with good code quality looks alike. Code base with bad code quality can be bad for a variety of reasons." - Aristotle, probably </p>
+<p style="text-align:left;">"All code bases with good code quality look alike. On the other hand, code bases with bad code quality can be bad for a variety of reasons." - Aristotle, probably </p>
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Aristotle_Altemps_Inv8575.jpg/1024px-Aristotle_Altemps_Inv8575.jpg" height="400px"></img>
 
@@ -110,16 +110,15 @@ Source: [xkcd](https://xkcd.com/1833/)
 * 2016: got serious about Python code quality
   * Collaborated with a former software engineer at Google on making an internal Python package
   * Got my first PR tore apart (constructively) by my teammate
-  * Subsequent PR are in better shape, fortunately
 
 ---
 ### My journey on code quality (2)
 * 2017: improve Python code quality and dabble in DevOps
   * Internal package sees more adoption - need to boost docs (sphinx) and CICD testing (CircleCI)
-  * Performing my own devops work through awscli, ansible
-* 2018-2020: taking my own learning and use it as a model developer
-  * Convert my team's model from databricks notebooks into pip-installable package
-  * Complete with sphinx docs, unit tests, integration tests, functional tests
+  * Performing my own DevOps work through awscli, ansible
+* 2018-2020: apply my own learning to my new role (model developer)
+  * Convert my team's model development code from databricks notebooks into pip-installable package
+  * Adopting best practices such as sphinx docs, unit tests, integration tests, functional tests
   * Test driven development (TDD) whenever possible
 
 ---
@@ -167,6 +166,11 @@ df_il = df[df.state == 'IL']
 ---
 ### Code smell: copypasta hell
 
+<img src="image/meme_copy_paste.jpg" height="450px"></img>
+
+---
+### Code smell: copypasta hell
+
 * Why we've all done it:
   * Quick and easy ("I just need to get it to work this one time")
   * Copy from another script
@@ -208,7 +212,7 @@ df = pd.read_csv('/Users/eid123/some/path/on/your/machine/very_cool_data.csv')
 ---
 ### What you should do instead
 
-* For anything other htan small-scale debugging, put things like file names in a configuration module
+* For anything other than small-scale debugging, put things like file names in a configuration module
 * Use `os.path` or `pathlib` to determine absolute paths (bonus: this also takes care of platform interoperability)
 
 ```python
@@ -266,11 +270,41 @@ df_il = df.iloc[6:9]
 def calculate_speed_with_gravity(sec):
     """Calculate the speed of object after ``sec`` seconds"""
     return sec * 9.81
+```
 
+```python
 def calculate_speed_with_gravity_refactored(sec, gravity_acceleration=9.81):
     """Calculate the speed of object after ``sec`` seconds"""
     return sec * gravity_acceleration
 ```
+
+---
+### Code smell: no comments or docstrings
+
+<p style="text-align:left;">"Documentation? No, just read the code... it's all pretty straightforward."</p>
+
+<iframe src="https://giphy.com/embed/Myd5rnSXpvpL2" width="480" height="288" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+
+Source: [twitter](https://twitter.com/jakevdp/status/847859811823767552)
+
+---
+### Code smell: no comments or docstrings
+
+* Why we've all done it:
+  * Code functionality is very clear*
+    * Only clear to the person who wrote it
+    * Only clear at time of writing
+  * "Why would I spend time writing docstrings? Nobody else is going to use this"
+
+* Why it's bad:
+  * **You** will need to use this
+
+---
+### What you should do instead
+
+* Docstring always
+* Comment in-line liberally
+* Bonus: make html-formatted docs with tools like [sphinx](http://www.sphinx-doc.org/en/master/)
 
 ---
 ### Code smell: lazy exception handling
@@ -315,34 +349,6 @@ except:
     print("Unexpected error:", sys.exc_info()[0])
     raise
 ```
-
----
-### Code smell: no comments or docstrings
-
-<p style="text-align:left;">"Documentation? No, just read the code... it's all pretty straightforward."</p>
-
-<iframe src="https://giphy.com/embed/Myd5rnSXpvpL2" width="480" height="288" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
-
-Source: [twitter](https://twitter.com/jakevdp/status/847859811823767552)
-
----
-### Code smell: no comments or docstrings
-
-* Why we've all done it:
-  * Code functionality is very clear*
-    * Only clear to the person who wrote it
-    * Only clear at time of writing
-  * "Why would I spend time writing docstrings? Nobody else is going to use this"
-
-* Why it's bad:
-  * **You** will need to use this
-
----
-### What you should do instead
-
-* Docstring always
-* Comment in-line liberally
-* Bonus: make html-formatted docs with tools like [sphinx](http://www.sphinx-doc.org/en/master/)
 
 ---
 ### Code smell: Do everything in notebooks
@@ -496,10 +502,9 @@ def multiply_by_two(x):
 ---
 ### White spaces
 
-* Do not mix tab and spaces (seriously, there is a `TabError` error type on Python specifically for this)
+* Do not mix tab and spaces (seriously, there is a `TabError` error type in Python 3 specifically for this)
 * Use 4 consecutive spaces per indentation level
 * Set your editor to automatically convert tab to 4 spaces
-* Spaces around assignment and comparison, except in argument lists
 
 ---
 ### White spaces (2)
@@ -532,9 +537,7 @@ def multiply_by_two(x):
 * Be consistent!
 
 ---
-### Google style docstring
-
-[Example Google Style Python Docstrings](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html#example-google)
+### [Google style docstring](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html#example-google)
 
 ```python
 def function_with_types_in_docstring(param1, param2):
@@ -558,9 +561,7 @@ def function_with_types_in_docstring(param1, param2):
 ```
 
 ---
-### NumPy style docstring
-
-[Example NumPy Style Python Docstrings](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html#example-numpy)
+### [NumPy style docstring]((https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html#example-numpy))
 
 ```python
 def function_with_types_in_docstring(param1, param2):
@@ -629,7 +630,7 @@ if i & (i-1) == 0:  # True if i is 0 or a power of 2.
 ### Problem: "such software, much code"
 
 * How do you know your shiny new function is working?
-* How do you know the changes you made didn't break anything?
+* How do you know the refactoring you worked on didn't break anything?
 * How do you know your environment didn't change overnight and break your script?
 
 <img src="image/meme_doge_software.jpg" height="350px"></img>
@@ -637,9 +638,20 @@ if i & (i-1) == 0:  # True if i is 0 or a power of 2.
 ---
 ### What are unit tests?
 
-* Check and balances against your code to ensure it's doing what you expect it to do
+* A test is an extra piece of code to verify the correctness of the code we actually care about
 * Unit tests can be designed to check for expected behavior under a variety of test cases
 * You can run the tests every time the code changes, to make sure that the whole system still functions as expected
+
+---
+### Benefits of unit testing
+
+* Verify present-day correctness
+* Establish interfaces & communicate with colleagues (PR reviewers)
+* Enable refactoring & reduce maintenance burden
+* Guard against complex interactions between other functions
+* Force good design
+
+Reference: [Write tests](http://matthewrocklin.com/blog/work/2016/02/08/tests) - Matthew Rocklin
 
 ---
 ### Unit test example
@@ -668,29 +680,6 @@ pytest_example.py ..                                                            
 ```
 
 ---
-### Benefits of unit testing
-
-* Refine business intent: writing unit test will actually help you understand business intent and all the corner cases that you may not have thought about.
-* Help catch programming errors
-* Force good design:
-  * If you find it hard to test your function, it might be due to poor design (e.g. trying to cram too much into a single function, greedy try-excepts, etc)
-  * Ideally, your unit of code should be self-contained. Unit-testing will force you to design your code in bite-sized chunks to facilitate testing.
-* Ensure new functionality doesn't break existing functionality
-
----
-### Common push backs about unit testing
-
-* "I don't have the time to do unit testing!"
-  * It save you time in the long run, in the form of a code base that's less buggy & easier to maintain
-* "It's too hard / takes too long"
-  * If you're not familiar with unit tests tooling, the first time can be intimidating
-  * Keep at it and it'll become second nature in no time
-  * Writing your unit tests should be done while you are developing your logic, or before
-  * If your code may go into production and you don't feel like you can write tests, make a fuss about it immediately
-* "This code isn't big or important enough to warrant unit testing"
-  * At some point, someone will take over your code (including you in 6 months)
-
----
 ### Unit testing tooling
 
 * [`unittest`](https://docs.python.org/3/library/unittest.html): built-in in Python standard library; inspired by JUnit (JAVA)
@@ -706,7 +695,7 @@ pytest_example.py ..                                                            
 
 * Unit tests: individual functions / classes
 * Integration tests: interface with other systems: database, HDFS, S3 buckets, H2O cluster, etc
-* Functional tests: entire pipelines
+* Functional tests: end-to-end of entire pipelines
 * Golden master tests: outputs generated by a realistic "golden input" do not change as software is updated
 
 ---
@@ -740,11 +729,11 @@ pytest_example.py ..                                                            
   * "If you don't share, you're basically useless to everyone else"
 
 ---
-### But but but...
+### Common pushbacks
 
-* I don't write code
-* I don't know how to use GitHub
-* *I haven't committed my code to GitHub because it's not ready*
+* "I don't write code"
+* "I don't know how to use GitHub"
+* "I haven't committed my code to GitHub because it's not ready"
   * If you hear this, there is a high likelihood that the code will never be ready
 
 <p style="text-align:left;">"GitHub is where you put code on to get it done, not where you put code on once it's done."</p>
@@ -760,9 +749,7 @@ Source: [Atlassian - Comparing Workflows](https://www.atlassian.com/git/tutorial
 * Forking workflow
 
 ---
-### Centralized workflow
-
-[Centralized Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows#centralized-workflow)
+### [Centralized workflow](https://www.atlassian.com/git/tutorials/comparing-workflows#centralized-workflow)
 
 * Summary:
   * The default (main) branch is called `master`
@@ -772,9 +759,7 @@ Source: [Atlassian - Comparing Workflows](https://www.atlassian.com/git/tutorial
 * The conflict resolution process can form a bottleneck as your team scales in size.
 
 ---
-### Feature branch workflow
-
-[Feature branch workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow)
+### [Feature branch workflow]((https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow))
 
 * Summary:
   * The default (main) branch is called `master`
@@ -784,9 +769,7 @@ Source: [Atlassian - Comparing Workflows](https://www.atlassian.com/git/tutorial
 * Promotes collaboration with team members through pull requests and merge reviews
 
 ---
-### Gitflow workflow
-
-[Gitflow Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
+### [Gitflow workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
 
 * Similar to feature branch workflow. Great for a release-based software workflow.
   * The `master` branch serves as the official releases of your project

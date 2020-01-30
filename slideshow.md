@@ -6,7 +6,7 @@
     I-Kang Ding
     </h5>
     <h6 style="color:white;"; >
-    Jan 22, 2020
+    Jan 2020
     </h6>
 </section>
 
@@ -19,6 +19,7 @@
 * <a href="#/unit-test">Unit test</a>
 * <a href="#/github-collaboration-workflow">GitHub collaboration workflow</a>
 * <a href="#/code-review">Code review</a>
+* <a href="#/reference">Reference</a>
 
 ---
 <section id="introduction">
@@ -98,7 +99,7 @@ Source: [xkcd](https://xkcd.com/1833/)
 
 * Code is a form of communicate with machines that does the heavy lifting computation for us.
 * Code is a form of communication between people.
-* Data science projects in industry (analysis, ML models, etc) are collaborative in nature - you won't be the only person who needs to use or modify your code
+* Data science projects (analysis, ML models, etc) are often collaborative in nature - you won't be the only person who needs to use or modify your code
 
 ---
 ### My journey on code quality
@@ -113,6 +114,7 @@ Source: [xkcd](https://xkcd.com/1833/)
 
 ---
 ### My journey on code quality (2)
+
 * 2017: improve Python code quality and dabble in DevOps
   * Internal package sees more adoption - need to boost docs (sphinx) and CICD testing (CircleCI)
   * Performing my own DevOps work through awscli, ansible
@@ -124,7 +126,7 @@ Source: [xkcd](https://xkcd.com/1833/)
 ---
 <section id="common-code-smell">
 <h2>Common Code Smell</h2>
-<h3>(and What to do about it)</h3>
+<h3>(and what to do about it)</h3>
 </section>
 
 ---
@@ -152,10 +154,16 @@ Source: [xkcd](https://xkcd.com/1833/)
 ---
 ### Code smell: copypasta hell
 
+<img src="image/meme_copy_paste.jpg" height="450px"></img>
+
+---
+### Code smell: copypasta hell
+
 `cmd-c, cmd-v`
 
 ```python
 import pandas as pd
+
 df = pd.read_csv('../data/file.csv')
 df_ny = df[df.state == 'NY']
 df_va = df[df.state == 'VA']
@@ -166,13 +174,8 @@ df_il = df[df.state == 'IL']
 ---
 ### Code smell: copypasta hell
 
-<img src="image/meme_copy_paste.jpg" height="450px"></img>
-
----
-### Code smell: copypasta hell
-
 * Why we've all done it:
-  * Quick and easy ("I just need to get it to work this one time")
+  * Quick and easy
   * Copy from another script
   * Making variations on a theme
 
@@ -200,19 +203,17 @@ df = pd.read_csv('/Users/eid123/some/path/on/your/machine/very_cool_data.csv')
 ### Code smell: hard-coding file paths
 
 * Why we've all done it:
-  * Quick and easy ("I just need to get it to work this one time")
-  * Ensure that prod data is not accidentally used during development
+  * Quick and easy
   * Robustly figuring out path is a pain
 
 * Why it's bad:
   * Hard to maintain
-  * Ensures that test data is accidentally used during production run
   * "Oh, to make the code run, you have to set your folder structure this way... What? you are using a Windows machine?"
 
 ---
 ### What you should do instead
 
-* For anything other than small-scale debugging, put things like file names in a configuration module
+* Put things like file names in a configuration module
 * Use `os.path` or `pathlib` to determine absolute paths (bonus: this also takes care of platform interoperability)
 
 ```python
@@ -246,6 +247,11 @@ df_il = df.iloc[6:9]
 ---
 ### Code smell: using magic numbers
 
+<img src="image/meme_magic_numbers.jpg" height="500px"></img>
+
+---
+### Code smell: using magic numbers
+
 * Why we've all done it:
   * Originally taught to program using arrays
   * Coding dynamic lookups is slower and more difficult than referencing index number
@@ -256,6 +262,7 @@ df_il = df.iloc[6:9]
 
 ---
 ### Code smell: using magic numbers
+
 "I'll just reuse my old script to load the new data for this month"
 
 <iframe src="https://giphy.com/embed/nLhdSinRtaL2E" width="470" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
@@ -264,7 +271,7 @@ df_il = df.iloc[6:9]
 ### What you should do instead
 
 * Use data structures that support string labels (e.g. `pd.DataFrame`)
-* For constants that you want to reuse, replace magic numbers with named constants
+* For constants that you want to reuse, replace magic numbers with named constants or function arg
 
 ```python
 def calculate_speed_with_gravity(sec):
@@ -273,9 +280,17 @@ def calculate_speed_with_gravity(sec):
 ```
 
 ```python
-def calculate_speed_with_gravity_refactored(sec, gravity_acceleration=9.81):
+def calculate_speed_with_gravity_func_arg(sec, gravity_acceleration=9.81):
     """Calculate the speed of object after ``sec`` seconds"""
     return sec * gravity_acceleration
+```
+
+```python
+GRAVITY_ACCELERATION = 9.81
+
+def calculate_speed_with_gravity_named_const(sec):
+    """Calculate the speed of object after ``sec`` seconds"""
+    return sec * GRAVITY_ACCELERATION
 ```
 
 ---
@@ -357,10 +372,12 @@ except:
 * Examples include: Jupyter (Python), Databricks (Spark), R Markdown / knitr (R)
 
 ---
-<img src="image/meme_notebook_quagmire.jpg" height="600px"></img>
+### Code smell: Do everything in notebooks
+
+<img src="image/meme_notebook_argument_horizontal.jpeg" height="600px"></img>
 
 ---
-### "Let's collaborate on a code base in a form of notebooks!"
+### "Let's collaborate on a code base in notebooks!"
 
 <img src="image/meme_notebook_merge_conflicts.png" height="450px"></img>
 
@@ -375,7 +392,6 @@ except:
 ### What notebooks are *not* good for
 
 * Get in the way of learning solid programming skills and encourage bad coding practices
-  * Copy-pasta hell, hard-coded file paths, magic numbers, no docstrings...
   * Hard to modularize and test components
   * Does not play well with tools for code quality checks and unit test suites
 * Get in the way of reproducibility
@@ -415,7 +431,6 @@ except:
 ### Google Python style guide
 
 * [Google Python style guide](http://google.github.io/styleguide/pyguide.html) is superset of PEP8, with its own idiosyncrasies
-* Capital One's own [code quality]() (TODO: add link here) repo is a lightly modified version of Google python style guide.
 
 ---
 ### Naming conventions
@@ -460,7 +475,7 @@ Source: [xkcd](https://xkcd.com/910/)
 ---
 ### Choose descriptive names
 
-Names should be as long as they need to be specific and descriptive.
+<p style="text-align:left;">Names should be as long as they need to be specific and descriptive.</p>
 
 ```python
 # Not recommended
@@ -505,20 +520,48 @@ def multiply_by_two(x):
 * Do not mix tab and spaces (seriously, there is a `TabError` error type in Python 3 specifically for this)
 * Use 4 consecutive spaces per indentation level
 * Set your editor to automatically convert tab to 4 spaces
+* Set your editor to automatically remove trailing whitespaces
 
 ---
-### White spaces (2)
+#### No white spaces inside parentheses, brackets or braces
 
-* No white spaces inside parentheses, brackets or braces
-  * Good: `spam(ham[1], {eggs: 2}, [])`
-  * Bad: `spam( ham[ 1 ], { eggs: 2 }, [ ] )`
-* Surround binary operators with single space on either side for assignment, comparisons, and booleans
-  * Good: `x == 1`
-  * Bad: `x==1`
-* Do not use spaces around `=` when passing keyword arguments or defining a default parameter value
-  * Good: `def complex(real, imag=0.0): return Magic(r=real, i=imag)`
-  * Bad: `def complex(real, imag = 0.0): return Magic(r = real, i = imag)`
-* No trailing whitespace (your text editor can help)
+```python
+# Good
+spam(ham[1], {eggs: 2}, [])
+```
+
+```python
+# Bad
+spam( ham[ 1 ], { eggs: 2 }, [ ] )
+```
+
+---
+#### Surround binary operators with single space on either side for assignment, comparisons, and booleans
+
+```python
+# Good
+x == 1
+```
+
+```python
+# Bad
+x==1
+```
+
+---
+#### Do not use spaces around `=` when passing keyword arguments or defining a default parameter value
+
+```python
+# Good
+def complex(real, imag=0.0):
+    return Magic(r=real, i=imag)
+```
+
+```python
+# Bad
+def complex(real, imag = 0.0):
+    return Magic(r = real, i = imag)
+```
 
 ---
 ### Blank lines
@@ -540,53 +583,45 @@ def multiply_by_two(x):
 ### [Google style docstring](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html#example-google)
 
 ```python
-def function_with_types_in_docstring(param1, param2):
-    """Example function with types documented in the docstring.
+def func(arg1, arg2):
+    """Summary line.
 
-    `PEP 484`_ type annotations are supported. If attribute, parameter, and
-    return types are annotated according to `PEP 484`_, they do not need to be
-    included in the docstring:
+    Extended description of function.
 
     Args:
-        param1 (int): The first parameter.
-        param2 (str): The second parameter.
+        arg1 (int): Description of arg1
+        arg2 (str): Description of arg2
 
     Returns:
-        bool: The return value. True for success, False otherwise.
-
-    .. _PEP 484:
-        https://www.python.org/dev/peps/pep-0484/
+        bool: Description of return value
 
     """
+    return True
 ```
 
 ---
-### [NumPy style docstring]((https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html#example-numpy))
+### [NumPy style docstring](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html#example-numpy)
 
 ```python
-def function_with_types_in_docstring(param1, param2):
-    """Example function with types documented in the docstring.
+def func(arg1, arg2):
+    """Summary line.
 
-    `PEP 484`_ type annotations are supported. If attribute, parameter, and
-    return types are annotated according to `PEP 484`_, they do not need to be
-    included in the docstring:
+    Extended description of function.
 
     Parameters
     ----------
-    param1 : int
-        The first parameter.
-    param2 : str
-        The second parameter.
+    arg1 : int
+        Description of arg1
+    arg2 : str
+        Description of arg2
 
     Returns
     -------
     bool
-        True if successful, False otherwise.
-
-    .. _PEP 484:
-        https://www.python.org/dev/peps/pep-0484/
+        Description of return value
 
     """
+    return True
 ```
 
 ---
@@ -617,7 +652,7 @@ if i & (i-1) == 0:  # True if i is 0 or a power of 2.
 ### Tools for code style guides: Autoformatters
 
 * Autoformatters are programs that refactor your code to conform with PEP 8 automatically.
-* If you and your collaborators can agree on using the same autoformatter, it can make code review a lot eaiser
+* If you and your collaborators can agree on using the same autoformatter, it can make code review a lot easier
 * Tools: [`black`](https://pypi.org/project/black/), [`autopep8`](https://pypi.org/project/autopep8/0.8/), [`yapf`](https://pypi.org/project/yapf/), etc.
 * You can try them on an existing code base and which one you like the best!
 
@@ -651,7 +686,7 @@ if i & (i-1) == 0:  # True if i is 0 or a power of 2.
 * Guard against complex interactions between other functions
 * Force good design
 
-Reference: [Write tests](http://matthewrocklin.com/blog/work/2016/02/08/tests) - Matthew Rocklin
+<p style="text-align:left;">Reference: [Write tests](http://matthewrocklin.com/blog/work/2016/02/08/tests) - Matthew Rocklin</p>
 
 ---
 ### Unit test example
@@ -759,7 +794,7 @@ Source: [Atlassian - Comparing Workflows](https://www.atlassian.com/git/tutorial
 * The conflict resolution process can form a bottleneck as your team scales in size.
 
 ---
-### [Feature branch workflow]((https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow))
+### [Feature branch workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow)
 
 * Summary:
   * The default (main) branch is called `master`
@@ -775,7 +810,7 @@ Source: [Atlassian - Comparing Workflows](https://www.atlassian.com/git/tutorial
   * The `master` branch serves as the official releases of your project
   * The `develop` branch serves as an integration branch for features
   * Developers create `feature` branch where changes are made and tested
-  * `feature` are merged back into `master` via PR's which initiate code reviews and discussions
+  * `feature` are merged back into `develop` via PR's which initiate code reviews and discussions
   * Once enough `features` have accumulated or time has passed for a new release, a `release` branch is created from `develop`
   * `hotfix` branch are created from `master` when production releases needs to be quickly patched
 
@@ -785,9 +820,7 @@ Source: [Atlassian - Comparing Workflows](https://www.atlassian.com/git/tutorial
 <img src="https://nvie.com/img/git-model@2x.png" height="600px"></img>
 
 ---
-### Forking workflow
-
-[Forking Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/forking-workflow)
+### [Forking Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/forking-workflow)
 
 * Summary:
   * Instead of committing directly to the main repo, you fork the code base to your own personal repo.
@@ -805,7 +838,7 @@ Source: [Atlassian - Comparing Workflows](https://www.atlassian.com/git/tutorial
 ### Why code reviews?
 
 * Code review is crucial to improve and maintain code quality
-* Testing itself is necessary but not sufficient - someone neds to check the coverage and logic of tests
+* Testing itself is necessary but not sufficient - someone needs to check the coverage and logic of tests
 * Code review help catch more bugs, make code easier to maintain, and encourage knowledge sharing
 
 <img src="https://imgs.xkcd.com/comics/code_quality_3.png" height="350px"></img>
@@ -833,7 +866,7 @@ Source: [Atlassian - Comparing Workflows](https://www.atlassian.com/git/tutorial
 ---
 ### Code review: PR reviewers
 
-* Check correctness, functionality, testing coverage, style guide rules, and readibility, then offer constructive feedback
+* Check correctness, functionality, testing coverage, style guide rules, and readability, then offer constructive feedback
 * Cite rules and explain your reasoning behind each recommendation
 * You shouldn't rush through a code review, but you should do it promptly
 * GitHub allow you to register your final judgement
@@ -843,7 +876,7 @@ Source: [Atlassian - Comparing Workflows](https://www.atlassian.com/git/tutorial
 ---
 ### PR reviewers should be considerate
 
-* Code reviews are essentially critiques - be coniderate, and recognize the potential emotional responses of the author
+* Code reviews are essentially critiques - be considerate, and recognize the potential emotional responses of the author
 * PR review should result in better quality code, and better programmers
 * PR review should not result in bruised egos, lower morales, and increased attrition
 
@@ -853,18 +886,20 @@ Source: [Atlassian - Comparing Workflows](https://www.atlassian.com/git/tutorial
 ### Code reviewer principles
 
 * Always find something to praise
-* Ask, dont judge
+* Ask, don't judge
 * Speak in "I would" terms, not "you should"
-* Don't critize someone for asking a question
+* Don't criticize someone for asking a question
 * Focus on the solution, not the problem
 * Remind people that it's about the work, not the person
 
 ---
-<section id="advanced-topics">
-<h2>Advanced Topics & References</h2>
+<section id="reference">
+<h2>Reference</h2>
 </section>
 
 ---
-### Placeholder
-
-<p style="text-align:left;"></p>
+* [Best practices for scientific computing](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1001745)
+* [Google Python style guide](http://google.github.io/styleguide/pyguide.html)
+* [The different types of software testing](https://www.atlassian.com/continuous-delivery/software-testing/types-of-software-testing) - Atlassian
+* [Write tests](http://matthewrocklin.com/blog/work/2016/02/08/tests) - Matthew Rocklin
+* ... and lots of discussions with my colleagues at Capital One!

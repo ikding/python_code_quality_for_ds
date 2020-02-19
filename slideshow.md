@@ -2,11 +2,14 @@
     <h2 style="color:white;"; >
     Python Code Quality
     </h2>
+    <h2 style="color:white;"; >
+    (for data scientists)
+    </h2>
     <h5 style="color:white;"; >
     I-Kang Ding
     </h5>
     <h6 style="color:white;"; >
-    Jan 2020
+    Feb 2020
     </h6>
 </section>
 
@@ -33,13 +36,11 @@
   * B.Sc. Chemistry, National Taiwan University
   * M.S. / Ph.D. Materials Sci. Eng., Stanford University
 
-* Career Path
-  * Device engineer at a solar cell startup
-  * Data scientist at a global top-3 LED manufacturer
-  * Data scientist at Capital One
-    * 2015: Capital One Labs
-    * 2017: ECI @ EP2 (aka. Digital)
-    * 2018: Fraud DS @ CDML (Card)
+* [Career Path](https://ikding.github.io/resume/)
+  * Device engineer at Alta Devices (solar cell startup)
+  * Data scientist at a Lumileds (LED manufacturer)
+  * Data scientist at Capital One (financial services)
+  * Data scientist at KoBold Metals (mineral exploration / climate tech)
 
 ---
 ### What is cod equality?
@@ -686,7 +687,7 @@ if i & (i-1) == 0:  # True if i is 0 or a power of 2.
 * Guard against complex interactions between other functions
 * Force good design
 
-<p style="text-align:left;">Reference: [Write tests](http://matthewrocklin.com/blog/work/2016/02/08/tests) - Matthew Rocklin</p>
+Reference: [Write tests](http://matthewrocklin.com/blog/work/2016/02/08/tests) - Matthew Rocklin
 
 ---
 ### Unit test example
